@@ -92,5 +92,7 @@ main(){
         sum += s[i].complete_time_taken;
         sum1 += s[i].burst_time;
     }
+cout<<"The average turnaround time is :"<<sum/3<<"\n";
+    cout<<"The average waiting time is :"<<sum1/3<<"\n";
 
 }
