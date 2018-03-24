@@ -140,6 +140,8 @@ main(){
     //sort_rr(q[0].p);
     //sort_ps(q[1].p);
     //sort_fcfs(q[2].p);
+
+
     while(notComplete(q)){
         if(timer == 10){
             shuffleQueuesOrder(q);
@@ -167,16 +169,7 @@ main(){
 
         else if(q[0].priority_start==4){
             //Priority Scheduling
- int rr_timer = 4;
-            while(rr_timer!=0){
-                    if(q[0].p[0].burst_time == 0 || timer == 10)
-                        break;
-                cout<<q[0].p[0].burst_time<<"\n";
-                q[0].p[0].burst_time--;
-                rr_timer--;
-                timer++;
-                }
-            q[1].p[0].burst_time--;
+
         }
         else{
             //FCFS
