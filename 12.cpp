@@ -73,7 +73,7 @@ main(){
 	//4 3 2
 	//3 3 2
 
-
+    cout<<"Longest Remaining Time First Algorithm Output\n";
     while(notComplete(s)){
         // Keep doing your stuff
         cout<<s[0].id<<"\n";
@@ -86,9 +86,10 @@ main(){
     // Turn around time = Completion Time - Arrival Time
     // Waiting Time = Turn Around Time - Burst Time
     // Calculate average turn around time and waiting time
+    cout<<"Student id | Turn around time | Waiting time"<<endl;
     for(int i=0;i<3;i++){
-        cout<<s[i].id<<" : "<<s[i].complete_time_taken<<"\n";
-        cout<<s[i].id<<" : "<<s[i].complete_time_taken - s[i].burst_time<<"\n";
+        cout<<s[i].id<<" :\t\t "<<s[i].complete_time_taken<<"\t\t";
+        cout<<s[i].complete_time_taken - s[i].burst_time<<"\n";
         sum += s[i].complete_time_taken;
         sum1 += s[i].burst_time;
     }

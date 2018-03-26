@@ -29,8 +29,8 @@ processes should be given by the user.
 using namespace std;
 
 struct process{
-    int priority = 0;
-    int burst_time = 0;
+    int priority;
+    int burst_time;
     bool executed = False;
 };
 
@@ -52,6 +52,7 @@ void notComplete(queues q[]){
         }
         return false;
 }
+/*
 void shuffleQueuesOrder(queues q[]){
     queues temp;
     for(int i=0;i<2;i++){
@@ -60,12 +61,19 @@ void shuffleQueuesOrder(queues q[]){
         q[i+1] = temp;
     }
 }
+*/
 void processNotComplete(queues q[]){
-    if(q[0].p[0].burst_time != 0){
+    if(q.p[0].burst_time != 0){
         return true;
     }
     return false;
 }
+
+void sort_rr(process *temp){
+
+}
+
+
 
 main(){
 
@@ -79,7 +87,6 @@ main(){
     q[2].priority_end = 9;
 
     int no_of_processes,priority_of_process,burst_time_of_process;
-    int count_q1,count_q2,count_q3;
     //Prompt User for entering Processes and assigning it to respective queues.
     cout<<"Enter the number of processes\n";
     cin>>no_of_processes;
@@ -135,50 +142,75 @@ main(){
         cout<<"NULL\n";
     }
 
+
     //While RR on multiple queues is not complete, keep on repeating
-    int timer = 0;
+
     //sort_rr(q[0].p);
     //sort_ps(q[1].p);
     //sort_fcfs(q[2].p);
 
-
+    int timer = 0;
+    int l =0;
     while(notComplete(q)){
+
         if(timer == 10){
-            shuffleQueuesOrder(q);
-            timer = 0;
+            l+=1;
+            if(l>=3){
+                l=l%3;
+            }
         }
-        if(q[0].executed == true){
+
+        //Process lth queue if its already not executed
+        //If its executed change the value of l
+        if(q[l].executed == true){
+            l+=1;
+            if(l>=3){
+                l=l%3;
+            }
             continue;
         }
-        //Non executed queue in hand
-        if(q[0].priority_start==1){
+
+        //Finally you now have a queue which is not completely executed
+        //Process the incomplete processes over it
+
+        if(l==0){
             //Round Robin Algorithm for q=4
             int rr_timer = 4;
-            while(rr_timer!=0 || timer!= 10 || processNotComplete(q)){
-                q[0].p[0].burst_time--;
-                rr_timer--;
-                timer++;
+            while(processNotComplete(q[0])){
+                while(rr_timer!=0 || timer!= 10 || processNotComplete(q)){
+                    q[0].p[0].burst_time--;
+                    rr_timer--;
+                    timer++;
+                    }
+                if(timer==10){
+                    break;
                 }
-            if(timer==10){
-                continue;
-            }
-            else if(rr_timer==0 && processNotComplete(q)){
-             sort_rr(q[0].p);
+                if(rr_timer!=0){
+
+                    //Process is complete
+                    //Mark it unsortable
+                    q[0].p[0].executed = true;
+                    //Now sort for remaining processes
+                    sort_rr(q[0].p);
+                    //Take other process from the queue
+                    //Sorting is done on the basis of priority
+                    // and if the process is executed simply put it in the end
+                    // and somehow don't involve it in sorting
+                    // check if every process is executed mark queue executed.
+                }
+                else if(rr_timer==0 && processNotComplete(q)){
+                 sort_rr(q[0].p);
+
+                }
             }
         }
 
-        else if(q[0].priority_start==4){
+        else if(l==1){
             //Priority Scheduling
 
         }
         else{
             //FCFS
-            //q[2].p[0].burst_time--;
-            //timer++;
-            for(int i=0;i<)
-            while(timer++!=10 && q[2].p[0].burst_time!=0){
-                q[2].p[0].burst_time--;
-            }
         }
     }
 }
