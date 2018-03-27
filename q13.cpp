@@ -167,13 +167,17 @@ main(){
     //While RR on multiple queues is not complete, keep on repeating
     int timer = 0;
     int l =-1;
+    int rr_timer = 4;
+    int counter=0;
+    int counterps=0;
+    int counterfcfs=0;
     while(notComplete(q)){
         if(timer == 10){
-            l+=1;
-            if(l>=3){
-                l=l%3;
-            }
             timer = 0;
+        }
+        l+=1;
+        if(l>=3){
+            l=l%3;
         }
 
         //Process lth queue if its already not executed
@@ -193,10 +197,17 @@ main(){
         if(l==0){
             cout<<"Queue "<<l+1<<" in hand\n";
             //Round Robin Algorithm for q=4
-            int rr_timer = 4;
+            if(rr_timer == 0){
+                rr_timer = 4;
+            }
+
             for(int i=0;i<q[l].length;i++){
                 if(q[l].p[i].burst_time==0){
-                        continue;
+                    counter++;
+                    continue;
+                }
+                if(counter == q[l].length){
+                    break;
                 }
                 while(rr_timer>0 && q[l].p[i].burst_time!=0 && timer!=10){
                     cout<<"Executing queue 1 and "<<i+1<<" process for a unit time. Process has priority of "<<q[l].p[i].priority<<"\n";
@@ -204,12 +215,22 @@ main(){
                     checkCompleteTimer(q);
                     rr_timer--;
                     timer++;
-                    cout<<l<<"\t"<<timer<<endl;
+
                 }
                 if(timer == 10){
                     break;
                 }
-                if(q[l].p[i].burst_time==0){
+                if(q[l].p[i].burst_time==0 && rr_timer ==0){
+                    rr_timer = 4;
+                    if(i == (q[i].length-1)){
+                        i=-1;
+                    }
+                    continue;
+                }
+                if(q[l].p[i].burst_time==0 && rr_timer > 0){
+                    if(i == (q[i].length-1)){
+                        i=-1;
+                    }
                     continue;
                 }
                 if(rr_timer <= 0){
@@ -230,14 +251,18 @@ main(){
             //Priority Scheduling
             for(int i=0;i<q[l].length;i++){
                 if(q[l].p[i].burst_time==0){
-                        continue;
+                    counterps++;
+                    continue;
+                }
+                if(counterps == q[l].length){
+                    break;
                 }
                 while(q[l].p[i].burst_time!=0 && timer!=10){
                     cout<<"Executing queue 2 and "<<i+1<<" process for a unit time. Process has priority of "<<q[l].p[i].priority<<"\n";
                     q[l].p[i].burst_time--;
                     checkCompleteTimer(q);
                     timer++;
-                    cout<<l<<"\t"<<timer<<endl;
+
                 }
                 if(timer == 10){
                     break;
@@ -253,7 +278,11 @@ main(){
             //FCFS
             for(int i=0;i<q[l].length;i++){
                 if(q[l].p[i].burst_time==0){
-                        continue;
+                    counterfcfs++;
+                    continue;
+                }
+                if(counterfcfs == q[l].length){
+                    break;
                 }
                 while(q[l].p[i].burst_time!=0 && timer!=10){
                     cout<<"Executing queue 3 and "<<i+1<<" process for a unit time. Process has priority of "<<q[l].p[i].priority<<"\n";
